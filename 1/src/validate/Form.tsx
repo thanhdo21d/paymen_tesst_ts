@@ -81,8 +81,30 @@ export const UserCheckoutSchema = Yup.object({
   name: Yup.string().required(),
   phone: Yup.string().required(),
   shippingLocation: Yup.string().required(),
-  shippingNote: Yup.string().required(),
-  paymentMethod: Yup.string().required()
+
+  shippingNote: Yup.string(),
+  paymentMethod: Yup.string().required(),
+  askRefer: Yup.boolean(),
+
+  nameOther: Yup.string()
+    .test('Bạn chưa điền thông tin trường này', (value) => typeof value === 'string')
+    .when('askRefer', {
+      is: true,
+      then: (schema) => schema.required()
+    }),
+  phoneOther: Yup.string()
+    .test('Bạn chưa điền thông tin trường này', (value) => typeof value === 'string')
+    .when('askRefer', {
+      is: true,
+      then: (schema) => schema.required()
+    }),
+  shippingLocationOther: Yup.string()
+    .test('Bạn chưa điền thông tin trường này', (value) => typeof value === 'string')
+    .when('askRefer', {
+      is: true,
+      then: (schema) => schema.required()
+    }),
+  shippingNoteOther: Yup.string()
 })
 
 export const InforFormSchema = Yup.object({

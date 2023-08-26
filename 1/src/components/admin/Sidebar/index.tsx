@@ -3,6 +3,7 @@ import type { FC } from 'react'
 import { useState } from 'react'
 import { HiChartPie, HiClipboardCheck, HiCollection, HiSearch, HiShoppingBag, HiUsers, HiTicket } from 'react-icons/hi'
 import { BiSolidCategoryAlt, BiSolidUserCheck } from 'react-icons/bi'
+import { MdOutlineWeb } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
 
 const AdminSidebar: FC = function () {
@@ -20,7 +21,7 @@ const AdminSidebar: FC = function () {
   // }, [currentPage]);
 
   return (
-    <Sidebar aria-label='Sidebar with multi-level dropdown example'>
+    <Sidebar aria-label='Sidebar with multi-level dropdown example' className='hidden lg:block'>
       <div className='flex flex-col justify-between h-full py-2'>
         <div>
           <form className='md:hidden pb-3'>
@@ -111,6 +112,11 @@ const AdminSidebar: FC = function () {
                 Help
               </Sidebar.Item>
             </Sidebar.ItemGroup> */}
+            <Sidebar.ItemGroup>
+              <Sidebar.Item onClick={() => handleRedirect('/')} icon={MdOutlineWeb} className='cursor-pointer'>
+                View Website
+              </Sidebar.Item>
+            </Sidebar.ItemGroup>
           </Sidebar.Items>
         </div>
       </div>

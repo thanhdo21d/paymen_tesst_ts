@@ -4,6 +4,7 @@ import { CheckboxChangeEvent } from 'antd/es/checkbox'
 import { IVoucher } from '../../interfaces/voucher.type'
 import isExpiredVoucher from '../../utils/isExpiredVoucher'
 import { GiTicket } from 'react-icons/gi'
+import { formatCurrency } from '../../utils/formatCurrency'
 
 type ModalListVouchersProps = {
   isOpen: boolean
@@ -13,7 +14,7 @@ type ModalListVouchersProps = {
 }
 
 const ModalListVouchers = ({ isOpen, toggleModal, voucherChecked, setVoucherChecked }: ModalListVouchersProps) => {
-  const { data: vouchers } = useGetAllVouchersQuery()
+  const { data: vouchers } = useGetAllVouchersQuery(1)
 
   const onChange = (e: CheckboxChangeEvent) => {
     setVoucherChecked(e.target.value)
@@ -23,6 +24,7 @@ const ModalListVouchers = ({ isOpen, toggleModal, voucherChecked, setVoucherChec
   const onCancel = () => {
     toggleModal()
     setVoucherChecked({} as IVoucher)
+    message.error('Đã bỏ chọn mã giảm giá', 2)
   }
 
   return (
@@ -51,7 +53,7 @@ const ModalListVouchers = ({ isOpen, toggleModal, voucherChecked, setVoucherChec
             >
               <Radio className='select-none' disabled={isExpiredVoucher(voucher?.endDate!)} value={voucher}>
                 <div className='flex items-center justify-center gap-x-2'>
-                  <GiTicket className='text-2xl' /> {voucher.code}
+                  <GiTicket className='text-2xl' /> {`${voucher.code} - ${formatCurrency(voucher.sale)}`}
                 </div>
               </Radio>
             </Radio.Group>

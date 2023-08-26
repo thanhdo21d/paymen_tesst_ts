@@ -10,6 +10,7 @@ import {
 } from 'react-icons/fa'
 
 import { Link } from 'react-router-dom'
+
 import styles from './Footer-HomePage.module.scss'
 
 const FooterHomePage = () => {

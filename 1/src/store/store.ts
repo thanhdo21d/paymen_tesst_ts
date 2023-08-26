@@ -15,6 +15,7 @@ import { productReducer } from './slices/product.slice'
 import storage from 'redux-persist/lib/storage'
 import CategoryApi from '../api/category'
 import { OrderAPI } from './slices/order'
+import { CartDBAPI } from '../api/cartDB'
 
 const persistConfig = {
   key: 'root',
@@ -48,6 +49,7 @@ export const store = configureStore({
     [RoleApi.reducerPath]: RoleApi.reducer,
     [CategoryApi.reducerPath]: CategoryApi.reducer,
     [Auth.reducerPath]: Auth.reducer,
+    [CartDBAPI.reducerPath]: CartDBAPI.reducer,
     [OrderAPI.reducerPath]: OrderAPI.reducer
   },
   middleware: (getDefaultMiddleware) =>
@@ -59,6 +61,7 @@ export const store = configureStore({
       ApiUser.middleware,
       ApiProducts.middleware,
       ToppingAPI.middleware,
+      CartDBAPI.middleware,
       ApiVoucher.middleware,
       RoleApi.middleware,
       CategoryApi.middleware,

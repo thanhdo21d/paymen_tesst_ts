@@ -7,8 +7,8 @@ const ApiVoucher = createApi({
   baseQuery: baseQueryWithReAuth,
   tagTypes: ['voucher'],
   endpoints: (builder) => ({
-    getAllVouchers: builder.query<IVoucherDocs, void>({
-      query: () => '/api/vouchers',
+    getAllVouchers: builder.query<IVoucherDocs, number | string>({
+      query: (page) => `/api/vouchers?_page=${page}`,
       providesTags: ['voucher']
     }),
 

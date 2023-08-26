@@ -83,7 +83,7 @@ const ListProducts = ({ categoryName, products }: ListProductsProps) => {
               )}
             </div>
           </div>
-          <Paginate action={paginatePage} totalPages={products?.totalPages!} currentPage={page} />
+          <Paginate action={paginatePage} totalPages={product && (products?.totalPages as number)} currentPage={page} />
         </div>
 
         <div className='order-bottom bg-[#fff] fixed bottom-0 w-[100vw] flex flex-col border-t border-[#f1f1f1] lg:hidden'>

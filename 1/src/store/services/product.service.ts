@@ -13,6 +13,6 @@ export const getAllProducts = createAsyncThunk<
       return response.data // Assuming your API returns an array of products
     }
   } catch (error: any) {
-    throw error
+    return error
   }
 })

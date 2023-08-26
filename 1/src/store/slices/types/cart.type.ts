@@ -15,12 +15,31 @@ export interface CartItemState {
   price: number
   quantity: number
   size: { name: string; price: number; _id: string }
-  toppings: { name: string; price: number }[]
+  toppings: { name: string; price: number; _id?: string }[]
   total: number
   product: string
 }
 
 export interface CartLists {
+  _id?: string
   name: string
   items: CartItemState[]
+}
+
+export interface CartDBRes {
+  message: string
+  data: CartLists[]
+}
+
+export interface CartDbCreate {
+  name: string
+  items: {
+    image: string
+    price: number
+    quantity: number
+    product: string
+    size: string
+    toppings: string[]
+    total: number
+  }[]
 }

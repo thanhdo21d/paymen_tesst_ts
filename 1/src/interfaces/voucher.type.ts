@@ -9,7 +9,7 @@ export interface IVoucherDocs {
     pagingCounter?: number
     prevPage?: null | any
     totalDocs?: number
-    totalPages?: number
+    totalPages: number
   }
 }
 

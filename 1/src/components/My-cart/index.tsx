@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 
 import CardOrder from '../Card-Order'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { RootState } from '../../store/store'
 import Swal from 'sweetalert2'
 import { formatCurrency } from '../../utils/formatCurrency'
@@ -9,8 +9,13 @@ import { resetAllCart } from '../../store/slices/cart.slice'
 import { v4 as uuidv4 } from 'uuid'
 
 const MyCart = () => {
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { items } = useAppSelector((state: RootState) => state.persistedReducer.cart)
+  const { user } = useAppSelector((state: RootState) => state.persistedReducer.auth)
+
+  // const getAllCart = useGetAllCartDBQuery()
+
   /* Tính tổng tiền và tổng số lượng quantity */
   const { total, quantity } = items.reduce(
     (accumulator, item) => {
@@ -39,6 +44,17 @@ const MyCart = () => {
       }
     })
   }
+
+  // check user login when click
+  // console.log('auth ', user)
+  const handleCheckUser = () => {
+    if (user.accessToken == '') {
+      navigate('/signin')
+      return
+    } else {
+      navigate('/products/checkout')
+    }
+  }
   return (
     <div className='sidebar shrink-0 w-[300px] bg-[#fff] text-[14px] rounded-sm mx-[16px] pb-[12px] h-fit hidden lg:block'>
       <div className='border border-transparent border-b-[#f1f1f1]  px-4 py-2 flex justify-between items-center'>
@@ -59,14 +75,11 @@ const MyCart = () => {
             <span className='cart-ss2-four text-[#8a733f]'>{formatCurrency(total)}</span>
           </div>
           <div className='cart-ss3'>
-            <Link to='checkout'>
-              <button
-                disabled={items.length > 0 ? false : true}
-                className='bg-[#d8b979] text-white text-center rounded-xl py-1 w-full'
-              >
-                Thanh toán
-              </button>
-            </Link>
+            {/* <Link to="checkout"> */}
+            <button onClick={handleCheckUser} className='bg-[#d8b979] text-white text-center rounded-xl py-1 w-full'>
+              Thanh toán
+            </button>
+            {/* </Link> */}
           </div>
         </div>
       </div>

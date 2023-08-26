@@ -18,13 +18,14 @@ import { v4 as uuidv4 } from 'uuid'
 import { yupResolver } from '@hookform/resolvers/yup'
 import ModalListVouchers from '../../components/ModalListVouchers'
 import { IVoucher } from '../../interfaces/voucher.type'
-
+import { AiOutlinePlusCircle } from 'react-icons/ai'
 //
 const Checkout = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [voucherChecked, setVoucherChecked] = useState({} as IVoucher)
 
   const [orderAPIFn] = useCreateOrderMutation()
+  const [btnShipOrder, setBtnShipOrder] = useState<boolean>(false)
   const dispatch = useAppDispatch()
 
   const toggleModal = () => {
@@ -106,8 +107,7 @@ const Checkout = () => {
     if (!(dataInfoUser.user.accessToken && dataInfoUser.user._id)) {
       return navigate('/sign')
     } else {
-      const productOrder = getData('list')
-      console.log('🚀 ~ file: Checkout.tsx:100 ~ handleFormInfoCheckout ~ productOrder:', productOrder)
+      // const productOrder = getData('list')
       console.log(data)
       const dataForm = {
         user: dataInfoUser.user && dataInfoUser.user._id,
@@ -117,14 +117,14 @@ const Checkout = () => {
         noteOrder: textNoteOrderRef.current?.value !== '' ? textNoteOrderRef.current?.value : ' ',
         paymentMethodId: 'cod',
         inforOrderShipping: {
-          name: data.name,
-          phone: data.phone,
-          address: data.shippingLocation,
-          noteShipping: data.shippingNote
+          name: data.nameOther != '' ? data.nameOther : data.name,
+          phone: data.phoneOther != '' ? data.phoneOther : data.phone,
+          address: data.shippingLocationOther != '' ? data.shippingLocationOther : data.shippingLocation,
+          noteShipping: data.shippingNoteOther != '' ? data.shippingNoteOther : data.shippingNote
         }
       }
       console.log(dataForm)
-      orderAPIFn(dataForm).then((res: any) => {
+      orderAPIFn(dataForm as never).then((res: any) => {
         if (res.error) {
           return toast.error('Đặt hàng thất bại' + res.error.data.error)
         } else {
@@ -132,7 +132,6 @@ const Checkout = () => {
           dispatch(resetAllCart())
           toast.success('Bạn đặt hàng thành công')
           // alert(data.shippingNote)
-
           // reset();
           // dispatch(resetAllCart());
           // navigate('http://localhost:4000/vnpay');
@@ -209,9 +208,74 @@ const Checkout = () => {
               />
             </div>
           </div>
+          <div className='title mb-[7px] px-5'>
+            <button type='button' className='py-[10px]   my-2   ' onClick={() => setBtnShipOrder(!btnShipOrder)}>
+              <label className='flex items-center gap-2' htmlFor='askRefer'>
+                <AiOutlinePlusCircle />
+                <span> {!btnShipOrder ? 'Thêm' : 'Xóa'} người nhận</span>
+              </label>
+            </button>
+            <input type='checkbox' id='askRefer' className='hidden' {...register('askRefer')} />
+          </div>
+          <div className='mt-8'>
+            {/* info order shipping other */}
+            {btnShipOrder && (
+              <>
+                <div className='title mb-[7px] px-5'>
+                  <h2 className='font-semibold text-sm'>Thông tin người nhận mới</h2>
+                </div>
+                <div className=' shadow-[0_3px_10px_0_rgba(0,0,0,0.1)] bg-white p-5'>
+                  <div className='py-[10px]'>
+                    <Input
+                      name='nameOther'
+                      register={register}
+                      error={errors.nameOther?.message}
+                      prefix={<BiSolidUser />}
+                      placeholder='Tên người nhận'
+                    />
+                  </div>
+                  <div className='py-[10px]'>
+                    <Input
+                      prefix={<FaPhoneAlt />}
+                      placeholder='Số điện thoại người nhận'
+                      name='phoneOther'
+                      register={register}
+                      error={errors.phoneOther?.message}
+                    />
+                  </div>
+
+                  <div className='location'>
+                    <div className='title pt-[10px] text-sm'>
+                      <h2>Giao đến</h2>
+                    </div>
+                    <div className='py-[10px]'>
+                      <Input
+                        prefix={<FaMapMarkerAlt />}
+                        placeholder='Địa chỉ người nhận'
+                        name='shippingLocationOther'
+                        error={errors.shippingLocationOther?.message}
+                        register={register}
+                      />
+                    </div>
+                  </div>
+                  <div className='py-[10px]'>
+                    <Input
+                      prefix={<FaStickyNote />}
+                      placeholder='Ghi chú địa chỉ...'
+                      name='shippingNoteOther'
+                      error={errors.shippingNoteOther?.message}
+                      register={register}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/*  */}
+          </div>
           <div className=' mt-8'>
             <div className='title mb-[7px] px-5'>
-              <h2 className='text-sm font-semibold'>Phương thức thanh toán</h2>
+              <h2 className='font-semibold text-sm'>Phương thức thanh toán</h2>
             </div>
             <div className='shadow-[0_3px_10px_0_rgba(0,0,0,0.1)] bg-white p-5'>
               <label className={` ${styles.container_radio} cod-payment block group`}>
@@ -236,11 +300,11 @@ const Checkout = () => {
                 />
                 <span className={`${styles.checkmark_radio} group-hover:bg-[#ccc]`}></span>
               </label>
-              <label className={` ${styles.container_radio} momo-payment block group`}>
+              {/* <label className={` ${styles.container_radio} momo-payment block group`}>
                 <span className='text-sm'>Thanh toán qua Ví MoMo</span>
-                <input className='absolute opacity-0' type='radio' value='momo' {...register('paymentMethod')} />
+                <input className='opacity-0 absolute' type='radio' value='momo' {...register('paymentMethod')} />
                 <span className={`${styles.checkmark_radio} group-hover:bg-[#ccc]`}></span>
-              </label>
+              </label> */}
               {errors.paymentMethod && <span className='text-red-500 text-[13px]'>{errors.paymentMethod.message}</span>}
             </div>
           </div>

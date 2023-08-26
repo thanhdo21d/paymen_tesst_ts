@@ -31,7 +31,7 @@ const Pagination = ({ nextPage, prevPage, hasNext, hasPrev, totalDocs }: Paginat
         </Button>
         <span className='dark:text-gray-400 text-sm font-normal text-gray-500'>
           Showing&nbsp;
-          <span className='dark:text-white font-semibold text-gray-900'>1-10</span>
+          <span className='dark:text-white font-semibold text-gray-900'>10</span>
           &nbsp;of&nbsp;
           <span className='dark:text-white font-semibold text-gray-900'>{totalDocs}</span>
         </span>

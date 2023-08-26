@@ -15,6 +15,7 @@ import Swal from 'sweetalert2'
 import { toast } from 'react-toastify'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import Loading from '../../../components/Loading'
 
 const Topping = () => {
   return (
@@ -110,7 +111,7 @@ const ToppingTable = () => {
       toast.error('Delete failed!')
     }
   }
-  if (isLoading) return <div>Loading.....</div>
+  if (isLoading) return <Loading />
   if (isError) return <div>Loi roi</div>
   return (
     <Table className='dark:divide-gray-600 min-w-full divide-y divide-gray-200'>

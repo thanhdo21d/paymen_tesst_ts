@@ -44,7 +44,7 @@ const UserList: FC = () => {
     setCurrentPage((prev) => prev - 1)
   }
   return (
-    <>
+    <section>
       <div className='dark:border-gray-700 dark:bg-gray-800 sm:flex items-center justify-between block p-4 bg-white border-b border-gray-200'>
         <div className='w-full mb-1'>
           <div className='mb-4'>
@@ -137,7 +137,7 @@ const UserList: FC = () => {
           totalDocs={users?.totalDocs}
         />
       )}
-    </>
+    </section>
   )
 }
 
@@ -247,10 +247,10 @@ const AllUsersTable = function ({ users, isLoading, isError }: AllUsersTableProp
                 <div className='flex items-center capitalize'>
                   <div
                     className={`mr-2 h-2.5 w-2.5 rounded-full  ${
-                      user?.status === 'active' ? 'bg-green-400' : 'bg-red-400'
+                      user?.role?.status === 'active' ? 'bg-green-400' : 'bg-red-400'
                     }`}
                   ></div>
-                  {user?.status || 'Not Active'}
+                  {user?.role?.status || 'Not Active'}
                 </div>
               </Table.Cell>
               <Table.Cell>
@@ -490,7 +490,7 @@ const EditUserModal = function ({ user }: EditUserModalProps) {
               <div>
                 <Label htmlFor='account'>Account</Label>
                 <div className='mt-1'>
-                  <TextInput id='account' {...register('account')} placeholder='Your email or phone number' />
+                  <TextInput readOnly id='account' {...register('account')} placeholder='Your email or phone number' />
                 </div>
                 <span className='block my-2 text-sm text-red-500'>{errors.account && errors.account.message}</span>
               </div>

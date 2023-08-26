@@ -13,7 +13,7 @@ export interface IUser {
   address?: string
   products?: string[]
   order?: string[]
-  role?: IRole
+  role: IRole
   email?: string
   status?: string
   deleted?: boolean
